@@ -90,7 +90,7 @@ export const otp_verification = async (req: Request, res: Response) => {
     }
 }
 
-export const login = async (req, res) => { //email or password // phone or password
+export const login = async (req, res) => {
     reqInfo(req)
     let response: any
     try {
@@ -159,9 +159,7 @@ export const forgot_password = async (req: Request, res: Response) => {
         }
         else return res.status(501).json(new apiResponse(501, responseMessage?.errorMail, {}, `${response}`));
     } catch (error) {
-        return res
-            .status(500)
-            .json(new apiResponse(500, responseMessage?.internalServerError, {}, error));
+        return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error));
     }
 };
 
