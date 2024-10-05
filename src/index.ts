@@ -11,6 +11,9 @@ import http from 'http';
 import * as packageInfo from '../package.json'
 import path from "path"
 import router from './routes';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger/swagger.json';
+import { config } from '../config';
 
 const app = express();
 
@@ -37,6 +40,7 @@ const health = (req, res) => {
     license: packageInfo.license
   })
 }
+
 const bad_gateway = (req, res) => { return res.status(502).json({ status: 502, message: "Bharat Exam Fest Backend API Bad Gateway" }) }
 
 
@@ -45,6 +49,15 @@ app.get('/health', health);
 app.get('/isServerUp', (req, res) => {
   res.send('Server is running ');
 });
+
+var options = {}
+let swaggerDocument1:any = swaggerDocument
+app.use('/api-docs', function(req:any, res, next) {
+    swaggerDocument1.host = config.BACKEND_URL;
+    req.swaggerDoc = swaggerDocument1;
+    next();
+}, swaggerUi.serveFiles(swaggerDocument1, options), swaggerUi.setup());
+
 app.use(router)
 app.use('*', bad_gateway);
 
