@@ -24,6 +24,6 @@ const userSchema: any = new mongoose.Schema({
     createdBy: { type: mongoose.Schema.Types.ObjectId, default: null },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, default: null },
     isMobileVerified: { type: Boolean, default: false },
-}, { timestamps: true })
+}, { timestamps: true, versionKey: false })
 
 export const userModel = mongoose.model('user', userSchema);

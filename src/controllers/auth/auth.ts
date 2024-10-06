@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { userModel } from '../../database'
-import { apiResponse, compareHash, generateHash, generateToken, getUniqueOtp } from '../../utils'
+import { apiResponse, compareHash, generateHash, generateToken, generateUserId, getUniqueOtp, ROLE_TYPES } from '../../utils'
 import { createData, getFirstMatch, reqInfo, responseMessage } from '../../helper'
 import { config } from '../../../config'
 import { forgotPasswordSchema, loginSchema, otpVerifySchema, resetPasswordSchema, signUpSchema } from "../../validation"
@@ -19,17 +19,17 @@ export const signUp = async (req, res) => {
         if (error) {
             return res.status(501).json(new apiResponse(501, error?.details[0]?.message, {}, {}));
         }
-
+        console.log("value => ",value);
         let isAlready: any = await getFirstMatch(userModel, {
             $or: [
                 { email: value?.email },
-                { phoneNumber: value?.phoneNumber }
+                { "contact.mobile": value?.contact?.mobile }
             ]
         }, {}, {});
 
         if (isAlready) {
             if (isAlready.email === value?.email) {
-                return res.status(409).json(new apiResponse(409, responseMessage?.alreadyEmail, {}, {}));
+                return res.status(404).json(new apiResponse(404, responseMessage?.alreadyEmail, {}, {}));
             }
         }
 
@@ -37,12 +37,12 @@ export const signUp = async (req, res) => {
 
         const payload = { ...value }
         payload.password = await generateHash(payload.password)
-
+        payload.userType = ROLE_TYPES.ADMIN
+        
         let response = await createData(userModel, payload);
 
         response = {
             userType: response?.userType,
-            isEmailVerified: response?.isEmailVerified,
             _id: response?._id,
             email: response?.email,
         }

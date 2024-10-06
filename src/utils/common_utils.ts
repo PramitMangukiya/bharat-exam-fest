@@ -42,3 +42,9 @@ export const generateToken = (data = {}) => {
     const token = jwt.sign(data, jwt_token_secret)
     return token
 }
+
+export const generateUserId = (prefix)=> {
+    const randomInt = Math.floor(Math.random() * 100000); // Generate a random integer between 0 and 99999
+    const userId = `${prefix}${randomInt.toString().padStart(5, '0')}`; // Combine the random integer with the prefix ex."u-" and pad with leading zeros
+    return userId;
+}

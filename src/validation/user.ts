@@ -15,8 +15,7 @@ export const addUserSchema = Joi.object().keys({
         mobile: Joi.string().optional()
     }).optional(),
     upscNumber: Joi.string().optional(),
-    password: Joi.string().min(6).max(15).optional(),
-    userType: Joi.string().valid(...Object.values(ROLE_TYPES)).optional(),
+    password: Joi.string().min(6).max(15).optional()
 });
 
 export const editUserSchema = Joi.object().keys({

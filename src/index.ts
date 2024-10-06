@@ -61,5 +61,4 @@ app.use('/api-docs', function(req:any, res, next) {
 app.use(router)
 app.use('*', bad_gateway);
 
-
 export let server = new http.Server(app);
