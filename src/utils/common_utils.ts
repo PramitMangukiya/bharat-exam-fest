@@ -43,8 +43,21 @@ export const generateToken = (data = {}) => {
     return token
 }
 
-export const generateUserId = (prefix)=> {
+export const generateUserId = (prefix) => {
     const randomInt = Math.floor(Math.random() * 100000); // Generate a random integer between 0 and 99999
     const userId = `${prefix}${randomInt.toString().padStart(5, '0')}`; // Combine the random integer with the prefix ex."u-" and pad with leading zeros
     return userId;
+}
+
+export const questionType = {
+    EASY: 'easy',
+    MEDIUM: 'medium',
+    TOUGH: 'tough'
+}
+
+export const questionAnswer = {
+    A: 'A',
+    B: 'B',
+    C: 'C',
+    D: 'D'
 }

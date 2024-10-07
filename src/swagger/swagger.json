@@ -35,6 +35,9 @@
     },
     {
       "name": "Classes"
+    },
+    {
+      "name": "Question"
     }
   ],
   "paths": {
@@ -866,6 +869,297 @@
         "responses": {
           "200": {
             "description": "Class details"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/question/add": {
+      "post": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Add a new question",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subjectId": {
+                    "type": "string"
+                  },
+                  "subtopic": {
+                    "type": "string"
+                  },
+                  "questionBank": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "englishQuestion": {
+                    "type": "object",
+                    "properties": {
+                      "question": {
+                        "type": "string"
+                      },
+                      "options": {
+                        "type": "object",
+                        "properties": {
+                          "A": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "B": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "C": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "D": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      },
+                      "answer": {
+                        "type": "string"
+                      },
+                      "solution": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "hindiQuestion": {
+                    "type": "object",
+                    "properties": {
+                      "question": {
+                        "type": "string"
+                      },
+                      "options": {
+                        "type": "object",
+                        "properties": {
+                          "A": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "B": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "C": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "D": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      },
+                      "answer": {
+                        "type": "string"
+                      },
+                      "solution": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "subjectId",
+                  "subtopic",
+                  "questionBank",
+                  "type",
+                  "englishQuestion",
+                  "hindiQuestion"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Question added successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/question/edit": {
+      "post": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Edit an existing question",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "questionId": {
+                    "type": "string"
+                  },
+                  "subjectId": {
+                    "type": "string"
+                  },
+                  "subtopic": {
+                    "type": "string"
+                  },
+                  "questionBank": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "englishQuestion": {
+                    "type": "object",
+                    "properties": {
+                      "question": {
+                        "type": "string"
+                      },
+                      "options": {
+                        "type": "object",
+                        "properties": {
+                          "A": {
+                            "type": "boolean"
+                          },
+                          "B": {
+                            "type": "boolean"
+                          },
+                          "C": {
+                            "type": "boolean"
+                          },
+                          "D": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "answer": {
+                        "type": "string"
+                      },
+                      "solution": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "hindiQuestion": {
+                    "type": "object",
+                    "properties": {
+                      "question": {
+                        "type": "string"
+                      },
+                      "options": {
+                        "type": "object",
+                        "properties": {
+                          "A": {
+                            "type": "boolean"
+                          },
+                          "B": {
+                            "type": "boolean"
+                          },
+                          "C": {
+                            "type": "boolean"
+                          },
+                          "D": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "answer": {
+                        "type": "string"
+                      },
+                      "solution": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "questionId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Question edited successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/question/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Delete a question by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question deleted successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/question/all": {
+      "get": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Get all questions",
+        "responses": {
+          "200": {
+            "description": "A list of questions"
+          }
+        }
+      }
+    },
+    "/question/{id}": {
+      "get": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Get a question by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question details"
           },
           "400": {
             "description": "Invalid input"

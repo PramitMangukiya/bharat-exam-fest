@@ -18,8 +18,6 @@ export const add_user = async (req, res) => {
         value.createdBy = new ObjectId(user?._id)
         value.updatedBy = new ObjectId(user?._id)
 
-        if (!value.roleId) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound("role"), {}, {}))
-
         let isExist = await userModel.findOne({ email: value.email })
         if (isExist) return res.status(404).json(new apiResponse(404, responseMessage?.dataAlreadyExist("email"), {}, {}))
 
@@ -53,8 +51,8 @@ export const edit_user_by_id = async (req, res) => {
 
         value.updatedBy = new ObjectId(user?._id)
         const response = await userModel.findOneAndUpdate({ _id: new ObjectId(value._id), isDeleted: false }, value, { new: true });
-        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.updateDataError('user'), {}, {}));
-        return res.status(200).json(new apiResponse(200, responseMessage?.updateDataSuccess('user'), response, {}));
+        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.updateDataError("user"), {}, {}));
+        return res.status(200).json(new apiResponse(200, responseMessage?.updateDataSuccess("user"), response, {}));
     } catch (error) {
         console.log(error);
         return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error));
@@ -69,8 +67,8 @@ export const delete_user_by_id = async (req, res) => {
             return res.status(501).json(new apiResponse(501, error?.details[0]?.message, {}, {}));
         }
         const response = await userModel.findOneAndUpdate({ _id: new ObjectId(value.id), isDeleted: false }, { isDeleted: true }, { new: true });
-        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound('user'), {}, {}));
-        return res.status(200).json(new apiResponse(200, responseMessage?.deleteDataSuccess('user'), {}, {}));
+        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound("user"), {}, {}));
+        return res.status(200).json(new apiResponse(200, responseMessage?.deleteDataSuccess("user"), {}, {}));
     } catch (error) {
         console.log(error);
         return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error));
@@ -108,7 +106,7 @@ export const get_all_users = async (req, res) => {
             }
         ])
 
-        return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess('users'), {
+        return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess("users"), {
             subject_data: response[0]?.data || [],
             totalData: response[0]?.data_count[0]?.count || 0,
             state: {
@@ -132,8 +130,8 @@ export const get_user_by_id = async (req, res) => {
         }
 
         const response = await userModel.findOne({ _id: new ObjectId(value.id), isDeleted: false });
-        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound('user'), {}, {}));
-        return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess('user'), response, {}));
+        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound("user"), {}, {}));
+        return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess("user"), response, {}));
     } catch (error) {
         console.log(error);
         return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error));
@@ -145,7 +143,7 @@ export const get_user_by_id = async (req, res) => {
 //     try {
 //         let role = await roleModel.findOne({name : ROLE_TYPES.USER})
 //         let response = await userModel.find({roleId : ObjectId(role._id), isDeleted : false}).select("firstName lastName _id")
-//         return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess('user'),response, {}));
+//         return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess("user"),response, {}));
 //     } catch (error) {
 //         console.log(error);
 //     }

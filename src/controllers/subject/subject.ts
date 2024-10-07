@@ -121,3 +121,13 @@ export const get_subject_by_id = async (req, res) => {
         return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error))
     }
 }
+
+export const get_all_subjects = async (req, res) => {
+    try {
+        const response = await subjectModel.find({ isDeleted: false })
+        if (!response) return res.status(404).json(new apiResponse(404, responseMessage?.getDataNotFound("subject"), {}, {}))
+        return res.status(200).json(new apiResponse(200, responseMessage?.getDataSuccess("subject"), response, {}))
+    } catch (error) {
+        return res.status(500).json(new apiResponse(500, responseMessage?.internalServerError, {}, error))
+    }
+}
