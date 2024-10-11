@@ -1166,6 +1166,404 @@
           }
         }
       }
+    },
+    "/contest/add": {
+      "post": {
+        "tags": [
+          "Contest"
+        ],
+        "description": "Add a new contest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contestName": {
+                    "type": "string"
+                  },
+                  "contestType": {
+                    "type": "string"
+                  },
+                  "contestStartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "contestEndDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "totalSpots": {
+                    "type": "integer"
+                  },
+                  "fees": {
+                    "type": "number"
+                  },
+                  "winningAmountPerFee": {
+                    "type": "number"
+                  },
+                  "winnerPercentage": {
+                    "type": "number"
+                  },
+                  "ranks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "place": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "totalQuestions": {
+                    "type": "integer"
+                  },
+                  "totalTime": {
+                    "type": "string"
+                  },
+                  "totalMarks": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "contestName",
+                  "contestType",
+                  "contestStartDate",
+                  "contestEndDate",
+                  "totalSpots",
+                  "fees",
+                  "winningAmountPerFee",
+                  "winnerPercentage",
+                  "totalQuestions",
+                  "totalTime",
+                  "totalMarks"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contest added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contest/edit": {
+      "post": {
+        "tags": [
+          "Contest"
+        ],
+        "description": "Edit an existing contest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contestId": {
+                    "type": "string"
+                  },
+                  "contestName": {
+                    "type": "string"
+                  },
+                  "contestType": {
+                    "type": "string"
+                  },
+                  "contestStartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "contestEndDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "totalSpots": {
+                    "type": "integer"
+                  },
+                  "fees": {
+                    "type": "number"
+                  },
+                  "winningAmountPerFee": {
+                    "type": "number"
+                  },
+                  "winnerPercentage": {
+                    "type": "number"
+                  },
+                  "ranks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "place": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "totalQuestions": {
+                    "type": "integer"
+                  },
+                  "totalTime": {
+                    "type": "string"
+                  },
+                  "totalMarks": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "contestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contest edited successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contest/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Contest"
+        ],
+        "description": "Delete a contest by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contest deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contest/all": {
+      "get": {
+        "tags": [
+          "Contest"
+        ],
+        "description": "Get all contests",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search term to filter contests"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of contests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contest_data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "totalData": {
+                      "type": "integer"
+                    },
+                    "state": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "page_limit": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contest/{id}": {
+      "get": {
+        "tags": [
+          "Contest"
+        ],
+        "description": "Get a contest by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contest details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "contestName": {
+                      "type": "string"
+                    },
+                    "contestType": {
+                      "type": "string"
+                    },
+                    "contestStartDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "contestEndDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "totalSpots": {
+                      "type": "integer"
+                    },
+                    "fees": {
+                      "type": "number"
+                    },
+                    "winningAmountPerFee": {
+                      "type": "number"
+                    },
+                    "winnerPercentage": {
+                      "type": "number"
+                    },
+                    "ranks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "place": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "totalQuestions": {
+                      "type": "integer"
+                    },
+                    "totalTime": {
+                      "type": "string"
+                    },
+                    "totalMarks": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }
