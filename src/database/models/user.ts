@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const userSchema: any = new mongoose.Schema({
     firstName: { type: String },
-    LastName: { type: String },
+    lastName: { type: String },
     email: { type: String },
     gender: { type: String, enum: Object.values(GENDER_TYPES) },
     dob: { type: Date },

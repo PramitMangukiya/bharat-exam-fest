@@ -63,7 +63,7 @@ export const signUp = async (req, res) => {
     }
 }
 
-export const otp_verification = async (req: Request, res: Response) => {
+export const otp_verification = async (req, res) => {
     reqInfo(req)
     try {
 
@@ -75,10 +75,10 @@ export const otp_verification = async (req: Request, res: Response) => {
 
         let data = await userModel.findOne(value);
         if (!data) return res.status(400).json(new apiResponse(400, responseMessage?.invalidOTP, {}, {}))
-        if (data.isBlock == true) return res.status(403).json(new apiResponse(403, responseMessage?.accountBlock, {}, {}))
-        if (new Date(data.otpExpireTime).getTime() < new Date().getTime()) return res.status(410).json(new apiResponse(410, responseMessage?.expireOTP, {}, {}))
+        if (data.isBlocked == true) return res.status(403).json(new apiResponse(403, responseMessage?.accountBlock, {}, {}))
+        // if (new Date(data.otpExpireTime).getTime() < new Date().getTime()) return res.status(410).json(new apiResponse(410, responseMessage?.expireOTP, {}, {}))
         if (data) {
-            let response = await userModel.findOneAndUpdate(value, { otp: null, otpExpireTime: null, isEmailVerified: true, isLoggedIn: true }, { new: true });
+            let response = await userModel.findOneAndUpdate(value, { otp: null, isMobileVerified: true}, { new: true });
             const token = generateToken({
                 _id: response._id,
                 status: "Login",
@@ -89,6 +89,7 @@ export const otp_verification = async (req: Request, res: Response) => {
                 isEmailVerified: response?.isEmailVerified,
                 _id: response?._id,
                 email: response?.email,
+                userType: response?.user,
                 token,
             }
             return res.status(200).json(new apiResponse(200, responseMessage?.OTPverified, result, {}))

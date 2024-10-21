@@ -26,11 +26,12 @@ export const add_user = async (req, res) => {
         if(value?.contact?.mobile){
             let mobileNumber = value?.contact?.countryCode + value?.contact?.mobile
             let sms = await sendSms(mobileNumber, otp)
-            // if()
+            if(!sms.sid) return res.status(404).json(new apiResponse(404, "Invalid Phone Number", {}, {}))
         }
 
         value.password = await generateHash(value.password)
         value.userType = ROLE_TYPES.USER
+        value.otp = otp
 
         while (!userId) {
             let temp = generateUserId(prefix);
