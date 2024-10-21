@@ -2,10 +2,9 @@ import { config } from "../../config";
 import { userModel } from "../database";
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { response } from "express";
-import { apiResponse } from "./constant";
-import { responseMessage } from "../helper";
+import twilio from 'twilio';
 
+const client = twilio(config.TWIlIO_ACCOUNT_ID, config.TWIlIO_AUTH_TOKEN);
 
 const jwt_token_secret = config.JWT_TOKEN_SECRET
 
@@ -60,4 +59,18 @@ export const questionAnswer = {
     B: 'B',
     C: 'C',
     D: 'D'
+}
+
+export const sendSms = async (to: string, otp) => {
+    try {
+        const message = await client.messages.create({
+            body: `Hello! Your One-Time Password (OTP) is: ${otp}. Please use this code to complete your verification. This code is valid for a short time. Thank you!`,
+            from: config.TWIlIO_PHONE_NUMBER,
+            to: to
+        });
+        return {sid : message.sid};
+    } catch (error) {
+        console.error(`Error sending message: ${error}`);
+        throw error;
+    }
 }

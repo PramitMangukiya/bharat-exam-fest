@@ -27,4 +27,7 @@ export const config = {
   FCM_KEY: process.env.FCM_KEY,
   BACKEND_URL: process.env.BACKEND_URL,
   ENV: process.env.ENV,
+  TWIlIO_ACCOUNT_ID: process.env.TWIlIO_ACCOUNT_ID,
+  TWIlIO_AUTH_TOKEN: process.env.TWIlIO_AUTH_TOKEN,
+  TWIlIO_PHONE_NUMBER: process.env.TWIlIO_PHONE_NUMBER,
 }

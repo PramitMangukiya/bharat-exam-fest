@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { userModel } from '../../database'
-import { apiResponse, compareHash, generateHash, generateToken, generateUserId, getUniqueOtp, ROLE_TYPES } from '../../utils'
+import { apiResponse, compareHash, generateHash, generateToken, generateUserId, getUniqueOtp, ROLE_TYPES, sendSms } from '../../utils'
 import { createData, getFirstMatch, reqInfo, responseMessage } from '../../helper'
 import { config } from '../../../config'
 import { forgotPasswordSchema, loginSchema, otpVerifySchema, resetPasswordSchema, signUpSchema } from "../../validation"
@@ -39,8 +39,17 @@ export const signUp = async (req, res) => {
         payload.password = await generateHash(payload.password)
         payload.userType = ROLE_TYPES.ADMIN
         
-        let response = await createData(userModel, payload);
+        let otp = await getUniqueOtp()
+        if(value?.contact?.mobile){
+            let mobileNumber = value?.contact?.countryCode + value?.contact?.mobile
+            let sms = await sendSms(mobileNumber, otp)
+            if(!sms.sid) return res.status(404).json(new apiResponse(404, "Invalid Mobile Number", {}, {}))
+        }
+        
+        payload.otp = otp;
 
+        let response = await createData(userModel, payload);
+        
         response = {
             userType: response?.userType,
             _id: response?._id,

@@ -1,4 +1,4 @@
-import { apiResponse, generateHash, generateUserId, ROLE_TYPES } from "../../utils";
+import { apiResponse, generateHash, generateUserId, getUniqueOtp, ROLE_TYPES, sendSms } from "../../utils";
 import { userModel } from "../../database";
 import { reqInfo, responseMessage } from "../../helper";
 import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
@@ -20,6 +20,14 @@ export const add_user = async (req, res) => {
 
         let isExist = await userModel.findOne({ email: value.email })
         if (isExist) return res.status(404).json(new apiResponse(404, responseMessage?.dataAlreadyExist("email"), {}, {}))
+
+        let otp = await getUniqueOtp()
+        
+        if(value?.contact?.mobile){
+            let mobileNumber = value?.contact?.countryCode + value?.contact?.mobile
+            let sms = await sendSms(mobileNumber, otp)
+            // if()
+        }
 
         value.password = await generateHash(value.password)
         value.userType = ROLE_TYPES.USER
